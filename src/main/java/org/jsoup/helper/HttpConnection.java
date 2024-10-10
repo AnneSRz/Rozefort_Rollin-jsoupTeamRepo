@@ -818,7 +818,7 @@ public class HttpConnection implements Connection {
          <b>Internal only! </b>Creates a dummy HttpConnection.Response, useful for testing. All actual responses
          are created from the HttpURLConnection and fields defined.
          */
-        Response() {
+        public Response() {
             super();
             statusCode = 400;
             statusMessage = "Request not made";
@@ -1345,6 +1345,11 @@ public class HttpConnection implements Connection {
             }
             req.url(in.build());
             req.data().clear(); // moved into url as get params
+        }
+
+        public void data(Map<String, String> values) {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'data'");
         }
     }
 

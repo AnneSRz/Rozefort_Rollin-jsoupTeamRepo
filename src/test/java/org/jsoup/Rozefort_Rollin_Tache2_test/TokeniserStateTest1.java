@@ -2,7 +2,6 @@ package org.jsoup.Rozefort_Rollin_Tache2_test;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +38,6 @@ public class TokeniserStateTest1 {
         Document doc = Jsoup.parse(triggeringSnippet);
         Elements els = doc.select("div");
 
-        // Assert: Ensure the content is accurately captured and dashes are handled correctly
         assertEquals("Testy testing -- avec tirets -- et <tags></tags>", els.html().trim());
     }
 
