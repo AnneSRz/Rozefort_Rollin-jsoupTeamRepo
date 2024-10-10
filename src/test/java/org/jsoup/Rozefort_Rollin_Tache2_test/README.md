@@ -63,7 +63,12 @@ Devraient augmenter le coverage sur 4 cases de l'état InColumnGroup de HtmlTree
 
 ### Tests #6 et #7 de la classe 'TokeniserStateTest1'
 6. ScriptDataDoubleEscapedDash
+Vérifie le comportement dde cas spécifique pour la logique de Tokenisation pour les double tiret. Il est possible que le script les traites comme des commentaires, alors il faut s'assurer que les balises ne sont pas corrompus. 
+- La chaine de caractere est vérifié par JSOUP
+- L'élément est sélectionné et son contenu est vérifié
+- AVec le tests on s'assure que les tirets ont été skippé et que l'on garde le contenu à l'intérieur.
 
+Cette logique s'applique aussi pour :
 7. ScriptDataDoubleEscapedDashDash
 
 ### Tests #8 et #9 de la classe 'HttpConnectionTest'
@@ -72,6 +77,10 @@ Vérifie la méhode pour s'assurer que les données sont accesseible via la requ
 On commence par initialiser une instance MAP et établir une connexion HTTP. 
 On appelle ensuite la méthode data avec les valeurs insérées dans l'instance du MAP.On vérifie la récupération des données pour s'assurer qu'une paire de données est bien renvoyée. 
 9. Map<String, String> headers() 
+Check la methode pour s'assurer que l'ensemble d'en tête HTTP sous la forme d'un MAP est retourner. 
+- On va aller vérifier l'accès aux en-tête. 
+
+
 
 
 

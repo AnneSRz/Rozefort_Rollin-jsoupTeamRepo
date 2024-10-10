@@ -64,7 +64,31 @@ public class HttpConnectionTest1 {
         assertEquals("Quote", getHeaders.get("header2"));
     }
 
-    //Test#10 
+    //Test#10 (ligne 581 - 586)
+    /*
+    Oracle :
+    Intention : We want to test the case 'DOCTYPE' in state InColumnGroup at line 1185 of HtmlTreeBuilderState (untested case)
+    Structure : Arrange, Act, and Assert
+    Doc : README -> HtmlTreeBuilderState
+    Utilité : Tester le comportement lors de l'ajout d'un nested doctype tag. Va simplement supprimer le tag HTML, Doctype. Pour le tag illegal template, le parser le handle.
+    Exécution : Via ' mvn -Dtest=HtmlTreeBuilderStateTest1 test' ou Github Action
+    */
+    @Test
+    public void removeCookie() {
+        //Arranger
+        HttpConnection.Response req = new HttpConnection.Response();
 
+        req.cookies().put("brownie", "choccy");
+        req.cookies().put("biscoui", "vanilla");
 
+        //Act
+        req.removeCookie("brownie");
+
+        //Assert
+        //Le cookie a t'il bien été supprimé?
+        assertFalse(req.cookies().containsKey("brownie"));
+        //s'assurer que l'autre cookie est la
+        assertTrue(req.cookies().containsKey("biscoui"));
+        assertEquals("biscoui", req.cookies().get("vanilla"));
+    }
 }
