@@ -17,6 +17,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HttpConnectionTest1 {
 
+    /*
+    Applicable pour les tests 8 et 9
+    Oracle :
+    Intention : data et headers
+    Structure : Arrange, Act, and Assert
+    Doc : README -> HttpConnectionTest
+    Utilité : Tester le comportement pour voir si c'est possible de retrouver les valeurs dans l'objet
+    Exécution : Via ' mvn -Dtest=HttpConnectionTest1 test' ou Github Action
+    */
+
     //Test #8 (ligne 237 - 244)
     //Ici on veut s'assurer que la méthode permet bien d'enregistrée les valeurs pour qu'on puisse
     // par la suite y accéder.
@@ -67,11 +77,11 @@ public class HttpConnectionTest1 {
     //Test#10 (ligne 581 - 586)
     /*
     Oracle :
-    Intention : We want to test the case 'DOCTYPE' in state InColumnGroup at line 1185 of HtmlTreeBuilderState (untested case)
+    Intention : Tester la methode remove Cokkie qui ne l'avait pas été
     Structure : Arrange, Act, and Assert
-    Doc : README -> HtmlTreeBuilderState
-    Utilité : Tester le comportement lors de l'ajout d'un nested doctype tag. Va simplement supprimer le tag HTML, Doctype. Pour le tag illegal template, le parser le handle.
-    Exécution : Via ' mvn -Dtest=HtmlTreeBuilderStateTest1 test' ou Github Action
+    Doc : README -> HttpConnectionTest
+    Utilité : Tester le comportement lorsqu'on supprimer un cookie
+    Exécution : Via ' mvn -Dtest=HttpConnectionTest1 test' ou Github Action
     */
     @Test
     public void removeCookie() {

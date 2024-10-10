@@ -76,9 +76,13 @@ Cette logique s'applique aussi pour :
 Vérifie la méhode pour s'assurer que les données sont accesseible via la requete request.data après avoir été stockée dans l'objet connection. On regarde en même temps qu'elles ont bien été sauvegardées. 
 On commence par initialiser une instance MAP et établir une connexion HTTP. 
 On appelle ensuite la méthode data avec les valeurs insérées dans l'instance du MAP.On vérifie la récupération des données pour s'assurer qu'une paire de données est bien renvoyée. 
+
 9. Map<String, String> headers() 
 Check la methode pour s'assurer que l'ensemble d'en tête HTTP sous la forme d'un MAP est retourner. 
-- On va aller vérifier l'accès aux en-tête. 
+- On va aller vérifier l'accès aux en-tête.
+
+10. Vérifie la méthode removeCookie (ligne 581 - 586) pour que lorsqu'un cookie est supprimé, il ne se trouve plus dans la collection. Un test valide permet de s'assurer que la méthode a le comportement attendu dans la situation ou un cookie doit être supprimé. 
+
 
 
 
