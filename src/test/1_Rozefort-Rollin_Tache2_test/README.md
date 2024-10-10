@@ -1,5 +1,5 @@
 Emanuel Rollin 20106951
-Anne Sophie Rozefort 
+Anne Sophie Rozefort 20189221
 
 
 
@@ -31,4 +31,15 @@ Donc appeler Jsoup.parseBodyFragment de la bonne façon peut déclencher le cas 
 
 Il faut un code HTML contenant un body tag, un form tag et un p tag non fermé pour déclencher closeElement("p")
 
-# Tests de la classe ''
+# Tests de la classe 'HtmlTreeBuilderStateTest1'
+
+3. test 'inBodyStartTag'
+
+...
+->HTMLTreeBuilderState.Inbody declenche le case 'nobr'
+->HTMLTreeBuilder.resetInsertionMode() et .resetBody() et .resetInsertionMode()
+->Sont des méthodes employées dépendemment du HTMLTreeBuilderState
+...
+
+Il faut un code HTML contenant un body tag ouvert, un nobr tag ouvert pour declencher le case 'nobr' qui s'occupe de reparer le formatage
+
