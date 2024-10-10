@@ -17,7 +17,7 @@ public class TokeniserStateTest1 {
     // But : Vérifier la logique de tokenisation pour voir comment elle gère
     // les données de script contenant des séquences avec des doubles tirets et assurer que l'intégrité des balises de script sont maintenus.
 
-    //Test #3
+    //Test #6
     @Test
     public void testForScriptDataDoubleEscapedDash() {
 
@@ -30,7 +30,7 @@ public class TokeniserStateTest1 {
         assertEquals("&lt;-- testy testing --&gt;", els.html().trim());
     }
 
-    // Test #4 
+    // Test #7
     @Test
     public void testForScriptDataDoubleEscapedDashDash() {
         String triggeringSnippet = "<div>Testy testing -- avec tirets -- et <tags></tags></div>";
