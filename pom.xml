@@ -47,6 +47,7 @@
         <configuration>
           <encoding>UTF-8</encoding>
           <compilerArgs>
+            <!-- TODO - FLAGS FOR COMPILATION -->
             <!-- saves output for package-info.java, so mvn sees it has completed it, so incremental compile works -->
             <arg>-Xpkginfo:always</arg>
           </compilerArgs>
@@ -223,6 +224,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.3.1</version>
+        <!-- TODO HERE - FLAGS FOR TESTS  -->
+        <configuration>
+          <argLine>-Xmx1024m -XX:+PrintGCDetails</argLine>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
@@ -317,6 +322,7 @@
   </distributionManagement>
 
   <profiles>
+    <!-- TODO ADD PROFILES FOR VARIOUS ENV-->
     <!-- Compiles the multi-release jar when executed on JDK9+ -->
     <profile>
       <id>compile-multi-release</id>

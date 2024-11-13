@@ -1,0 +1,62 @@
+name: Build and Test with Multiple JVM Configurations
+
+on:
+  push:
+    branches: [ "master" ]   # Trigger the workflow when pushing to the master branch
+  pull_request:
+    branches: [ "master" ]   # Trigger the workflow when a PR targets the master branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # The job runs on the latest Ubuntu OS
+    strategy:
+      matrix:
+        java: [8, 17, 21]  # Test with Java versions 8, 17, and 21
+        jvm_flags: [
+          "-XX:+UseG1GC",  # Test JVM flag for Garbage Collector
+          "-XX:+PrintGCDetails",  # Test JVM flag to log GC details
+          "-XX:+UnlockDiagnosticVMOptions",  # Test JVM flag to unlock diagnostic options
+          "-XX:+UseParallelGC",  # Test JVM flag for Parallel GC
+          "-XX:+PrintFlagsFinal"  # Test JVM flag to print final JVM flag values
+        ]  # Matrix of JVM flags to test
+      fail-fast: false  # Continue testing all configurations even if one fails
+    name: Test JDK ${{ matrix.java }} with Flag ${{ matrix.jvm_flags }}  # Job name showing JVM version and flag in use
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # Checkout the code in the repository
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java }}  # Set up the JDK version defined in the matrix
+          distribution: 'temurin'  # Use the Temurin distribution of Java
+          cache: 'maven'  # Cache Maven dependencies for faster builds
+
+      - name: Set JVM flags and Build
+        env:
+          MAVEN_OPTS: ${{ matrix.jvm_flags }}  # Set the JVM flags as an environment variable for Maven
+        run: |
+          echo "Running Maven with JVM flag: ${{ matrix.jvm_flags }}"  # Log the JVM flag being used
+          mvn -B clean install -DskipTests  # Run Maven clean install without running tests
+
+      - name: Run Tests with Coverage
+        env:
+          MAVEN_OPTS: ${{ matrix.jvm_flags }}  # Set JVM flags for the test phase
+        run: |
+          echo "Running Tests with JVM flag: ${{ matrix.jvm_flags }}"  # Log JVM flag used during tests
+          mvn test -DskipTests=false  # Run Maven tests with coverage enabled
+
+      - name: Generate Coverage Report
+        run: |
+          echo "Generating code coverage report"  # Log when coverage report generation starts
+          mvn jacoco:report  # Generate code coverage report using JaCoCo
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-coverage-report  # Name for the uploaded artifact
+          path: target/site/jacoco-coverage-report  # Path to the generated coverage report
+
+      - name: Show coverage
+        run: |
+          echo "Coverage report generated for flag: ${{ matrix.jvm_flags }}"  # Log the flag used for the coverage report
