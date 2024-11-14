@@ -61,8 +61,6 @@ jobs:  # Define the jobs that will be executed
           # Log the flags used for this run
 
 
-
-
       - name: Maven Compile  # Step to compile the project using Maven
         run: mvn -X compile -B --file pom.xml  # Run Maven with debug output in batch mode
 
@@ -73,12 +71,15 @@ jobs:  # Define the jobs that will be executed
 #NEW ADDITION :
       - name: Generate Coverage Report  # Generate the test coverage report
         run: mvn jacoco:report
-        
-      - name: Parse and Print Coverage Percentage  #Logic from test.yml
+
+    
+      - name: Get JaCoCo Coverage
+        id: coverage  
         run: |
-          COVERAGE=$(python3 config/coverage.py target/site/jacoco/jacoco.csv) 
-          echo "COVERAGE=$coverage" >> $GITHUB_ENV
- 
+              coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv) 
+              echo "COVERAGE=$coverage" >> $GITHUB_ENV
+    
+              
       - name: Upload Coverage Report  # Upload the coverage report as an artifact
         uses: actions/upload-artifact@v3
         with:
