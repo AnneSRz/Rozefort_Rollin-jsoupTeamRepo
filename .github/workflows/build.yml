@@ -22,7 +22,7 @@ jobs:  # Define the jobs that will be executed
           "-XX:+UseCompressedOops -XX:+PrintFlagsFinal", #Memory control
           "-XX:+HeapDumpOnOutOfMemoryError -XX:+PrintFlagsFinal",  #Error management
           "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log -XX:+PrintFlagsFinal", #garbage colelction
-          "-Dhttp.keepAlive=true -Dhttp.maxConnections=5 -Dsun.net.http.errorstream.enableBuffering=true -XX:+PrintFlagsFinal", #Flags for HTTP requests / connections  optimization 
+          "-Dhttp.keepAlive=true -Dsun.net.http.errorstream.enableBuffering=true -XX:+PrintFlagsFinal", #Flags for HTTP requests / connections  optimization 
           "-XX:+AggressiveOpts -XX:+PrintFlagsFinal" #Threads Management and optimisation
 
 
@@ -33,7 +33,6 @@ jobs:  # Define the jobs that will be executed
 
 
     name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}  # Dynamic job name for easier identification in UI
-
 
     steps:  # Steps within the job
 
