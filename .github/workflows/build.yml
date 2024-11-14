@@ -19,12 +19,11 @@ jobs:  # Define the jobs that will be executed
           # Xmx1024m taille max du heap 
           #Xss640k : Stack d<un thread
           # Xpkginfo:always : genere un fichier de package d<information
-          "-XX:+UseCompressedOops", #Memory control
-          "-XX:+HeapDumpOnOutOfMemoryError",  #Error management
-          "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log", #garbage colelction
-          "-Dhttp.keepAlive=true -Dhttp.maxConnections=5 -Dsun.net.http.errorstream.enableBuffering=true", #Flags for HTTP requests / connections  optimization 
-          "-XX:+PrintFlagsFinal", #Logger
-          "-XX:+AggressiveOpts" #Threads Management and optimisation
+          "-XX:+UseCompressedOops -XX:+PrintFlagsFinal", #Memory control
+          "-XX:+HeapDumpOnOutOfMemoryError -XX:+PrintFlagsFinal",  #Error management
+          "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log -XX:+PrintFlagsFinal", #garbage colelction
+          "-Dhttp.keepAlive=true -Dhttp.maxConnections=5 -Dsun.net.http.errorstream.enableBuffering=true -XX:+PrintFlagsFinal", #Flags for HTTP requests / connections  optimization 
+          "-XX:+AggressiveOpts -XX:+PrintFlagsFinal" #Threads Management and optimisation
 
 
         ]  # Matrix of JVM flags to test

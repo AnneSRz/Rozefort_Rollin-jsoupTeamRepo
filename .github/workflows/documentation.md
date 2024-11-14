@@ -5,7 +5,7 @@ flags	  l'action exécute la compilation et les tests avec 5 flags différents d
 structure	  l'action génère des logs clairs qui documentent quels flags sont exécutés
 documentation le repo inclut une page qui documente les changements apportés à la Github action pour permettre l'exécution avec cinq flags
 motivation  la documentation inclut une section qui justifie le choix de chaque flag vis-à-vis de son impact possible sur la qualité, la performance, l'observabilité
-qualité	la mesure de la couverture est automatisée et le taux de couverture est mesuré à chaque build avec un flag différent; cinq taux de couverture sont mesurés par l'action
+qualité	        la mesure de la couverture est automatisée et le taux de couverture est mesuré à chaque build avec un flag différent; cinq taux de couverture sont mesurés par l'action
 humour	  le repo inclut un élément d'humour responsable et documenté
 
 
@@ -52,11 +52,13 @@ Résumé :
 
 Tous les flags ont été ajoutés dans le build.yml dans le tableau jvm_flags. 
 
-Pour chaque JDK version (8,17,21) et chaque OS (windows, ubuntu, macOS), on exécute les flags listés dans jvm_flags dans un nouveau workflow pour chaque combinaison de paramètres.
+Pour chaque JDK version (8,17,21) et chaque OS (windows, ubuntu, macOS), on exécute les flags listés dans jvm_flags dans un nouveau workflow pour chaque combinaison de paramètres. Comme il y a 3 JDK, 3 OS et 5 flags, il y a 3*3*5 = 45 builds à tester. 
 
 La tâche Apply JVM Flags log la tâche en cours d'exécution.
 
 La tâche Generate Coverage Report fait un rapport de couverture avec Jacoco
+
+Le flag -XX:+PrintFlagsFinal sert à logger l'état final des flags et est ajouté à chaque build.
 
 
 # Flags de pom.XML
@@ -73,10 +75,11 @@ Il y a déjà des flags qui sont fournis avec la configuration de certains plugi
 
 
 # Flag 1 : Compressed object pointers & Memory management
-JSoup processes large HTML documents in memory, so managing heap size effectively can help avoid out-of-memory errors. Diminue le overhead associé à l'allocation dynamique de l'espace.
+"-XX:+UseCompressedOops" permet de diminuer la taille des pointeurs de taille par défaut de 64 bits à des pointeurs de taille 32bits pour sauver de l'espace mémoire dans le heap. Permet aussi de stocker davantage de données dans le cache du CPU. Bénéfices en vitesse et en mémoire.
 
-Permet de diminuer la taille des pointeurs à 64 bits pour sauver de l'espace mémoire.
-"-XX:+UseCompressedOops"
+Fonctionne avec un système d'adresses mémoire relatifs au début du heap plutôt qu'à la position absolue de l'adresse. Tellement utile que souvent activé par défaut dans les JVM modernes.
+
+JSoup manipule et stocke des documents HTML qui peuvent avoir une taille significative et un impact sur la mémoire. Le parsing du document génère beaucoup d'objets ayant des types associés aux éléments HTML. Leurs instances a un coût en mémoire et réduire leur impact semble une optimisation intéressante.
 
 # Flag 2 : Gestion accrue des erreurs et de débogage
 -XX:+HeapDumpOnOutOfMemoryError est un flag de gestion des erreurs (comme celle liés à la mémoire) et de débogage dans la JVM. Cela ce produit lorsqu'une erreur de type OutOfMemoryError est rencontrée. JVM crée un Heap Dump qui est un fichier qui représente la mémoire pour détaillé le quand, où et comment de l'erreur. C'est assez utile pour analyser l'état de la mémoire, la diagnostiquer par exemple en cas de fuites oupsie daisy ou de consommation excessive. De plus, c'est aussi possible d'identifier les objets qui sont en cause de l'épuisement de la mémoire, dans le cas par exemple où il y a des fichiers HTML trop volumineux qui conduise à une utilisation excessive comme dans le cas de JSoup qui manipule des grands fichiers HTML.
