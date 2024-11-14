@@ -26,6 +26,7 @@ La tâche Generate Coverage Report fait un rapport de couverture avec Jacoco
 
 Le flag -XX:+PrintFlagsFinal sert à logger l'état final des flags et est ajouté à chaque build.
 
+**Voir # NEW ADDITION**
 
 # Flags de pom.XML
 Il y a déjà des flags qui sont fournis avec la configuration de certains plugins, listons-les pour éviter la redondance et prenons quelques instants pour expliquer leur utilité:
@@ -78,17 +79,10 @@ Ces stratégies diminuent la latence / overhead qui vient avec l'établissement 
 # Flag 5 : Optimisation 
 **-XX:+AggressiveOpts** active certaines fonctionnalités pour améliorer les performances de l'application. Puisque jsoup manipule des fichiers HTML, ce flag peut aider à améliorer les performances et accélérer les opérations en activant certaines fonctionnalités d'optimisation de la JVM qui, par défaut, ne sont pas activées. Par exemple, dans le parsing, cela serait pertinent pour optimiser l'exécution des boucles ou des structures de données. Comme jsoup peut être utilisé dans des environnements multithreads, notamment lorsqu'il est intégré dans des applications web traitant de nombreuses requêtes, ce flag peut améliorer la gestion du traitement multithread. En gros, il y a des avantages à utiliser ce flag pour améliorer la vitesse d'exécution. La qualité du logiciel peut également être améliorée, car cela permet de rendre l'application plus rapide.
 
+---
 
-# Critère de la tâche 3 :
-
-flags	l'action exécute la compilation et les tests avec 5 flags différents de la JVM *
-structure	l'action génère des logs clairs qui documentent quels flags sont exécutés
-documentation	le repo inclut une page qui documente les changements apportés à la Github action pour permettre l'exécution avec cinq flags
-motivation	la documentation inclut une section qui justifie le choix de chaque flag vis-à-vis de son impact possible sur la qualité, la performance, l'observabilité
-qualité	la mesure de la couverture est automatisée et le taux de couverture est mesuré à chaque build avec un flag différent; cinq taux de couverture sont mesurés par l'action
-humour	le repo inclut un élément d'humour responsable et documenté
-                                                                                        
-                                                                                                                                                                               
+#### Notre touche d'humour
+                                                                                                                                                                   
                    *#####*=                                        =+######*+ ###*               
            *#**######################+##+            ++++++##########################            
         *#################################*         ################################*#*          

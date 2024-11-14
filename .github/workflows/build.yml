@@ -70,11 +70,18 @@ jobs:  # Define the jobs that will be executed
 
 
 #NEW ADDITION :
-      - name: Generate Coverage Report  # Optional: Generate a test coverage report
-        run: mvn jacoco:report  # based on the JaCoCo configuration in the pom.xml for test coverage
-      
+      - name: Generate Coverage Report  # Generate the test coverage report
+        run: mvn jacoco:report
+        
+        
+ # Find the total coverage in the jacoco.xml report and print it BY using github grep github action
+      - name: Parse and Print Coverage Percentage  # Parse the coverage from the report
+        run: |
+            COVERAGE=$(grep -oP 'line-rate="\K[0-9.]*' target/site/jacoco/jacoco.xml)
+            echo "Total Line Coverage: ${COVERAGE*100}%"
+
       - name: Upload Coverage Report  # Upload the coverage report as an artifact
         uses: actions/upload-artifact@v3
         with:
           name: coverage-report
-          path: target/site/jacoco  # Adjust path to the JaCoCo report location
+          path: target/site/jacoco
