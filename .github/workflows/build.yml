@@ -13,15 +13,29 @@ jobs:  # Define the jobs that will be executed
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]  # Specify OS to run on
         java: [8, 17, 21]  # Specify JVM versions to test with
+        jvm_flags: [
+          "-Xms256m -Xmx1g",
+          "-XX:+UseCompressedOops",
+          "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCDateStamps"
 
+        ]  # Matrix of JVM flags to test
       fail-fast: false  # Don't stop the workflow if one job fails
+
+
+
 
     name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}  # Dynamic job name for easier identification in UI
 
+
     steps:  # Steps within the job
+
+
+
       - name: Checkout  # Step to check out the code from the repository
         uses: actions/checkout@v4  # Checkout action to pull the latest code
 
+
+        
       - name: Set up JDK ${{ matrix.java }}  # Set up the JDK for the current job based on matrix
         uses: actions/setup-java@v4  # Action to install Java
         with:
@@ -29,8 +43,31 @@ jobs:  # Define the jobs that will be executed
           distribution: 'zulu'  # Use the Zulu OpenJDK distribution
           cache: 'maven'  # Cache Maven dependencies to improve build times
 
+
+#NEW ADDITION :
+      - name: Apply JVM Flags  # Apply and log the JVM flags for clarity
+        env:
+            MAVEN_OPTS: ${{ matrix.jvm_flags }}  # Apply the specific JVM flags as environment variables
+        run: |
+            echo "Applying JVM flags: ${{ matrix.jvm_flags }}"  
+          # Log the flags used for this run
+
+
+
+
       - name: Maven Compile  # Step to compile the project using Maven
         run: mvn -X compile -B --file pom.xml  # Run Maven with debug output in batch mode
 
       - name: Maven Verify  # Step to verify the project (typically running tests)
         run: mvn -X verify -B --file pom.xml  # Run Maven with debug output in batch mode
+
+
+#NEW ADDITION :
+      - name: Generate Coverage Report  # Optional: Generate a test coverage report
+        run: mvn jacoco:report  # Assuming JaCoCo is configured in the pom.xml for test coverage
+      
+      - name: Upload Coverage Report  # Upload the coverage report as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: target/site/jacoco  # Adjust path to the JaCoCo report location
