@@ -74,14 +74,11 @@ jobs:  # Define the jobs that will be executed
       - name: Generate Coverage Report  # Generate the test coverage report
         run: mvn jacoco:report
         
-        
- # Find the total coverage in the jacoco.xml report and print it BY using github awk github action
-      - name: Parse and Print Coverage Percentage  # Parse the coverage from the report
+      - name: Parse and Print Coverage Percentage  #Logic from test.yml
         run: |
-          COVERAGE=$(awk -F'line-rate="' '/line-rate/ {print $2}' target/site/jacoco/jacoco.xml | awk -F'"' '{print $1}')
-          echo "Total Line Coverage: $COVERAGE"
+          COVERAGE=$(python3 config/coverage.py target/site/jacoco/jacoco.csv) 
+          echo "COVERAGE=$coverage" >> $GITHUB_ENV
  
-
       - name: Upload Coverage Report  # Upload the coverage report as an artifact
         uses: actions/upload-artifact@v3
         with:
