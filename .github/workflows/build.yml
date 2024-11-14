@@ -57,6 +57,7 @@ jobs:  # Define the jobs that will be executed
             MAVEN_OPTS: ${{ matrix.jvm_flags }}  # Apply the specific JVM flags as environment variables
         run: |
             echo "Applying JVM flags: ${{ matrix.jvm_flags }}"  
+            echo "Flaggy flaging all the flaggy flags"
           # Log the flags used for this run
 
 
@@ -74,11 +75,12 @@ jobs:  # Define the jobs that will be executed
         run: mvn jacoco:report
         
         
- # Find the total coverage in the jacoco.xml report and print it BY using github grep github action
+ # Find the total coverage in the jacoco.xml report and print it BY using github awk github action
       - name: Parse and Print Coverage Percentage  # Parse the coverage from the report
         run: |
-            COVERAGE=$(grep -oP 'line-rate="\K[0-9.]*' target/site/jacoco/jacoco.xml)
-            echo "Total Line Coverage: ${COVERAGE*100}%"
+          COVERAGE=$(awk -F'line-rate="' '/line-rate/ {print $2}' target/site/jacoco/jacoco.xml | awk -F'"' '{print $1}')
+          echo "Total Line Coverage: $COVERAGE"
+ 
 
       - name: Upload Coverage Report  # Upload the coverage report as an artifact
         uses: actions/upload-artifact@v3

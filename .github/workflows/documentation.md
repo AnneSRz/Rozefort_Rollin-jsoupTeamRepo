@@ -82,6 +82,7 @@ Ces stratégies diminuent la latence / overhead qui vient avec l'établissement 
 ---
 
 #### Notre touche d'humour
+Voir dans Build.yml à la ligne 60
                                                                                                                                                                    
                    *#####*=                                        =+######*+ ###*               
            *#**######################+##+            ++++++##########################            
