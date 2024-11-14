@@ -24,7 +24,7 @@ jobs:  # Define the jobs that will be executed
           "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log", #garbage colelction
           "-Dhttp.keepAlive=true -Dhttp.maxConnections=5 -Dsun.net.http.errorstream.enableBuffering=true", #Flags for HTTP requests / connections  optimization 
           "-XX:+PrintFlagsFinal", #Logger
-          ""
+          "-XX:+AggressiveOpts" #Threads Management and optimisation
 
 
         ]  # Matrix of JVM flags to test

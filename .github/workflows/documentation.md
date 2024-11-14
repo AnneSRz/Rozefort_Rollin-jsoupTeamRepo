@@ -98,11 +98,14 @@ Les 2 derniers sont utiles dans un environnement de développement ou de test,pu
 "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log"
 
 # Flag 4 : HTTP Connection Optimization flags 
--Dhttp.keepAlive=true will allow Jsoup to reuse connections, minimizing setup times for each request.
--Dhttp.maxConnections=5 controls the number of concurrent connections to avoid overloading the server while keeping enough open to maintain throughput.
--Dsun.net.http.errorstream.enableBuffering=true ensures any error responses are buffered for faster access, which can be helpful if handling pages that might return error codes like 404 or 500.
+-Dhttp.keepAlive=true Cela permet à une connexion HTTP de rester ouverte et d'être réutilisée pour plusieurs requêtes vers le même serveur. Cela évite de créer une nouvelle connexion pour chaque requête pour diminuer l'effet de la latence.
 
-                                                                                                 
+-Dhttp.maxConnections=5 Ce flag définit le nombre maximum de connexions simultanées qu'une JVM peut ouvrir à 5.
+
+-Dsun.net.http.errorstream.enableBuffering=true Ajoute un tampon qui permet la lecture des responses HTTP en chunks plutôt que byte par byte. Accélère supposément le traitement des erreurs 404.
+
+# Flag 5 : Optimisation 
+-XX:+AggressiveOpts active certaines fonctionnalit/s pour améliorer les performance de l'application. Puisque jSoup manipule des fichiers HTML, ce flag peut aider à améliorer les performances et accélérer les opérations en activant certaines fonctionnalités d'optimisation de la JVM qui par défaut ne sont pas actives. Par exemple, dans le parsing, ce serait pertinent pour optimiser l'éxécution des boucles ou des structures de données. Comme jSoup peut être utilisé dans des environnement multithread dans le cas où jSoup est intégré dans des apps webs traitant beaucoup de requêtes, ce flag peut améliorer la gestion en cas de traitement multithread. En gros, il y a des avantages à utiliser ce flag pour améliorer la vitesse d'éxécution. La qualité du logicial peut aussi se retrouver à être améliorer, car elle peut rendre l'application plus rapide. 
                                                                                         
                                                                                                                                                                                
                    *#####*=                                        =+######*+ ###*               
