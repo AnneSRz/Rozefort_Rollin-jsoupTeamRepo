@@ -14,9 +14,18 @@ jobs:  # Define the jobs that will be executed
         os: [ubuntu-latest, windows-latest, macOS-latest]  # Specify OS to run on
         java: [8, 17, 21]  # Specify JVM versions to test with
         jvm_flags: [
-          "-Xms256m -Xmx1g",
-          "-XX:+UseCompressedOops",
-          "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCDateStamps"
+
+          #Deja fait par le prof :
+          # Xmx1024m taille max du heap 
+          #Xss640k : Stack d<un thread
+          # Xpkginfo:always : genere un fichier de package d<information
+          "-XX:+UseCompressedOops", #Memory control
+          "-XX:+HeapDumpOnOutOfMemoryError",  #Error management
+          "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log", #garbage colelction
+          "-Dhttp.keepAlive=true -Dhttp.maxConnections=5 -Dsun.net.http.errorstream.enableBuffering=true", #Flags for HTTP requests / connections  optimization 
+          "-XX:+PrintFlagsFinal", #Logger
+          ""
+
 
         ]  # Matrix of JVM flags to test
       fail-fast: false  # Don't stop the workflow if one job fails
@@ -64,7 +73,7 @@ jobs:  # Define the jobs that will be executed
 
 #NEW ADDITION :
       - name: Generate Coverage Report  # Optional: Generate a test coverage report
-        run: mvn jacoco:report  # Assuming JaCoCo is configured in the pom.xml for test coverage
+        run: mvn jacoco:report  # based on the JaCoCo configuration in the pom.xml for test coverage
       
       - name: Upload Coverage Report  # Upload the coverage report as an artifact
         uses: actions/upload-artifact@v3
