@@ -51,7 +51,7 @@ jobs:  # Define the jobs that will be executed
           cache: 'maven'  # Cache Maven dependencies to improve build times
 
 
-#NEW ADDITION :
+#NEW ADDITIONS :
       - name: Apply JVM Flags  # Apply and log the JVM flags for clarity
         env:
             MAVEN_OPTS: ${{ matrix.jvm_flags }}  # Apply the specific JVM flags as environment variables
@@ -68,21 +68,29 @@ jobs:  # Define the jobs that will be executed
         run: mvn -X verify -B --file pom.xml  # Run Maven with debug output in batch mode
 
 
-#NEW ADDITION :
-      - name: Generate Coverage Report  # Generate the test coverage report
-        run: mvn jacoco:report
+#NEW ADDITIONS :
+# Generates a JaCoCo coverage report based on test results
+      - name: Generate Coverage Report  # Step name for displaying in the GitHub Actions UI
+        run: mvn jacoco:report  # Runs Maven command to generate a coverage report using JaCoCo plugin
 
-    
-      - name: Get JaCoCo Coverage
-        id: coverage  
+      # Extracts the coverage percentage from the generated JaCoCo report
+      - name: Get JaCoCo Coverage  # Step name for getting coverage value
+        id: coverage  # Assigns an ID to this step to reference it later if needed
+        
+
+        #logic from test.yml
+        # Executes a Python script to parse the JaCoCo CSV report file and get the coverage value
+        # Sets an environment variable "COVERAGE" with the extracted value to be used in later steps 
         run: |
-              coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv) 
+              coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv)
               echo "COVERAGE=$coverage" >> $GITHUB_ENV
-        shell : bash
-    
-              
-      - name: Upload Coverage Report  # Upload the coverage report as an artifact
-        uses: actions/upload-artifact@v3
+        shell: bash  # Specifies the shell to use for running the script (bash in this case)
+
+      # Uploads the entire JaCoCo report as an artifact for later viewing or download
+      - name: Upload Coverage Report  # Step name for displaying in the GitHub Actions UI
+        uses: actions/upload-artifact@v3  # Uses GitHub's action to upload artifacts
         with:
-          name: coverage-report
-          path: target/site/jacoco
+          name: coverage-report  # Sets a name for the artifact, "coverage-report"
+          path: target/site/jacoco  # Specifies the path to the JaCoCo report files to upload as an artifact
+
+
